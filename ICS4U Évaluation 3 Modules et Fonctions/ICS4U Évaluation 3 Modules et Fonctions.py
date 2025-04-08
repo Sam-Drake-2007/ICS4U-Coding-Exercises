@@ -1,3 +1,5 @@
+"""Samuel Drake. Ce programme permet à l'utilisateur de gérer des noms de marques de voitures rares et insèrer le nombre de fois qu'ils ont vu ces marques. Pour accomplir ceci, il utilise 2 tableaux numpy."""
+
 import numpy as np # Module numpy pour manipuler les données dans une liste
 import véhicule
 from time import sleep # Fonction sleep pour donner du temps à lire le texte
@@ -27,40 +29,40 @@ while strChoix != "q" and strChoix != "Q":
 Menu
 --------
 Liste: {véhicule.imprimer_tableau(tblMarques, tblNombreMarques)}
-1 - Ajouter une marque de voiture et sa fréquence
-2 - Supprimer toutes les marques et leurs fréquences
-3 - Supprimer une marque et sa fréquence
-4 - Trier les marques par ordre alphabétique
-5 - Trier les marques par fréquence
+1 - Ajouter une nouvelle marque de voiture et sa fréquence
+2 - Modifié la fréquence d'une marque
+3 - Supprimer toutes les marques et leurs fréquences
+4 - Supprimer une marque et sa fréquence
+5 - Trier les marques par ordre alphabétique
+6 - Trier les marques par fréquence (croissant)
+7 - Trier les marques par fréquence (décroissant)
 
 Q - Quitter le programme
 
-Choix: """)
+Choix: """).lower()
     
     if strChoix == "1":
-        tplValeurs = véhicule.ajouter(tblMarques, tblNombreMarques)
-        if tplValeurs != False:
-            tblMarques = tplValeurs[0]
-            tblNombreMarques = tplValeurs[1]
+        tblMarques, tblNombreMarques = véhicule.ajouter(tblMarques, tblNombreMarques)
     
     elif strChoix == "2":
-        if len(lstMarques) == 0:
-            print("\nLa liste est vide!")
-        
-        else:
-            lstMarques = np.array([], dtype=str)
-            print("\nListe supprimée!")
-
+        tblMarques, tblNombreMarques = véhicule.modifier(tblMarques, tblNombreMarques)
+    
     elif strChoix == "3":
-        pass
+        tblMarques, tblNombreMarques = véhicule.suprimer_toutes(tblMarques, tblNombreMarques)
 
     elif strChoix == "4":
-        pass
+        tblMarques, tblNombreMarques = véhicule.suprimer_une(tblMarques, tblNombreMarques)
 
     elif strChoix == "5":
-        pass
+        tblMarques, tblNombreMarques = véhicule.trier_alphabétique(tblMarques, tblNombreMarques)
 
-    elif strChoix == "q" or strChoix == "Q":
+    elif strChoix == "6":
+        tblMarques, tblNombreMarques = véhicule.trier_fréquence_croissant(tblMarques, tblNombreMarques)
+    
+    elif strChoix == "7":
+        tblMarques, tblNombreMarques = véhicule.trier_fréquence_décroissant(tblMarques, tblNombreMarques)
+
+    elif strChoix == "q":
         print(f"\nListe finale: {véhicule.imprimer_tableau(tblMarques, tblNombreMarques)}\nAu revoir!")
     
     else: # Si l'utilisateur ne donne pas un nombre de 1-7, ou Q/q
