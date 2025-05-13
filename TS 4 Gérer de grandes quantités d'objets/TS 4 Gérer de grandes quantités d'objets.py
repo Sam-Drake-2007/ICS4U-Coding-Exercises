@@ -46,30 +46,122 @@ Choix: """).lower()
         
         strnom = input("Entrer le nom du jeux: ")
         lstjeux.append(jeu(strnom))
-        print(f"Jeux '{lstjeux[-1].strnom}' ajoutée!")
+        print(f"\nJeux '{lstjeux[-1].strnom}' ajoutée!")
 
 
 ################## Option 2 ##################
 
-    elif str_choix == "2":
+    elif str_choix == "2" and len(lstjeux) != 0:
         
         str_choix_modifier = input(f"\n{afficher(lstjeux)}\nEntrer le nom du jeux que vous voulez modifier les propriétés: ")
         while str_choix_modifier not in afficher(lstjeux):
             str_choix_modifier = input(f"\nOption invalide; entrer le nom du jeux que vous voulez modifier les propriétés: ")
-            
+
+        idx = afficher(lstjeux).index(str_choix_modifier)
+
         choix_propriété = input(f"""
-Jeux: {str_choix_modifier}
+{lstjeux[idx]}
+
 Entrer la propriété à modifier:
     1. Le nom du jeux
     2. Le(s) developpeurs
     3. Le genre
     4. L'année de publication
-    5. Les langues disponibles""")
+    5. Les langues disponibles
+
+Choix: """)
+        
+        if choix_propriété == "1":
+            nouveau_nom = input(f"\nNom actuel: '{lstjeux[idx].strnom}'\nEntrer le noveau nom: ")
+            lstjeux[idx].strnom = nouveau_nom
+        
+        elif choix_propriété == "2":
+            ajouter_supprimer = input("\n1. Ajouter un developpeur\n2. Supprimer un developpeur\nChoix: ")
+            
+            if ajouter_supprimer == "1":
+                developpeur = input("\nEntrer le nom du developpeur à ajouter: ")
+                lstjeux[idx].ajout_objet_dev(developpeur)
+                print(f"Developpeur {developpeur} ajouté.")
+            
+            elif ajouter_supprimer == "2":
+                developpeur = input(f"\n{lstjeux[idx].lstdeveloppeur} Entrer le nom du developpeur à supprimer: ")
+                lstjeux[idx].supp_objet_dev(developpeur)
+                print(f"Developpeur {developpeur} supprimé.")
+        
+        elif choix_propriété == "3":
+            ajouter_supprimer = input("\n1. Ajouter un genre\n2. Supprimer un genre\nChoix: ")
+            
+            if ajouter_supprimer == "1":
+                genre = input("\nEntrer le nom du genre à ajouter: ")
+                lstjeux[idx].ajout_objet_genre(genre)
+                print(f"Genre {genre} ajouté.")
+            
+            elif ajouter_supprimer == "2":
+                genre = input(f"\n{lstjeux[idx].lstgenre} Entrer le nom du genre à supprimer: ")
+                lstjeux[idx].supp_objet_genre(genre)
+                print(f"Genre {genre} supprimé.")
+        
+        elif choix_propriété == "4":
+            loop = ""
+            while loop != "false":
+                try:
+                    intnouveau_an = int(input("Quel est l'année de publication modifié : "))
+                    if intnouveau_an < 0:
+                        print("L'année de publication ne peut pas être un nombre négatif, ressayer.")
+                    else:
+                        lstjeux[idx].intannee = intnouveau_an
+                        print(f"Année de publication modifiée à {intnouveau_an}")
+                        loop = "false"
+                except:
+                    print("L'année de publication doit être un nombre entier, ressayer.")
+        
+        elif choix_propriété == "5":
+            print(f"Voici les jeux actuels : {afficher(lstjeux)}")
+            loop = ""
+            while loop != "false":
+                try:
+                    strchoixnom = input("Quel est le nom du jeu vidéo que tu veux modifié les langues disponibles : ")
+                    position = afficher(lstjeux).index(strchoixnom)
+                    loop = "false"
+                except:
+                    print(f"Le nom {strchoixnom} n'existe pas, ressayer.")
+            loop = ""
+            while loop != "false":
+                try:
+                    print(f"Voici les languages disponibles pour le jeu vidéo {afficher(lstjeux[position])} : {lstjeux[position].lstlangage}")
+                    while True:
+                        strchoix = input("Voulez vous supprimer ou modifier un des langages disponibles? (supprimer/modifier) ").lower()
+                        if strchoix == "supprimer":
+                            while True:
+                                strchoixsup = input("Quel langage veut tu supprimer? : ").lower()
+                                positionsup = afficher(lstjeux[position]).lstlangage.index(strchoixsup)
+                                x, langage = lstlangage[positionsup]
+                                if strchoixsup == langage:
+                                    lstjeux[position].lstlangage[positionsup].sup_objet_dev(strchoixsup)
+                                    break
+                                else:
+                                    print(f"Le jeu vidéo {strchoixsup} n'est pas un jeu qui a été créer, ressayer.")
+                        elif strchoix == "modifier":
+                            while True:
+                                strchoixmod = input("Quel langage veut tu modifier? : ").lower()
+                                positionmod = afficher(lstjeux[position]).lstlangage.index(strchoixmod)
+                                x, langage = lstlangage[positionmod]
+                                if strchoixsup == langage:
+                                    lstjeux[position].lstlangage[positionmod] = strchoixmod
+                                    break
+                                else:
+                                    print(f"Le jeu vidéo {strchoixmod} n'est pas un jeu qui a été créer, ressayer.")
+                        
+                        else:
+                            print("Entrer soit supprimer ou modifier, ressayer.")
+        
+        else:
+            print("Choix invalide")
 
 
 ################## Option 3 ##################
 
-    elif str_choix == "3":
+    elif str_choix == "3" and len(lstjeux) != 0:
         
         str_choix_afficher = input(f"\n{afficher(lstjeux)}\nEntrer le nom du jeux que vous voulez voir les propriétés: ")
         while str_choix_afficher not in afficher(lstjeux):
@@ -79,14 +171,14 @@ Entrer la propriété à modifier:
         print(f"""
 Nom: {lstjeux[idx].strnom}
 Developpeur(s): {lstjeux[idx].lstdeveloppeur}
-Genre: {lstjeux[idx].strgenre}
+Genre: {lstjeux[idx].lstgenre}
 Année de publication: {lstjeux[idx].intannee}
 Langues disponibles: {lstjeux[idx].lstlangage}""")
 
 
 ################## Option 4 ##################
 
-    elif str_choix == "4":
+    elif str_choix == "4" and len(lstjeux) != 0:
         
         loop = ""
         while loop != "false":
@@ -101,6 +193,9 @@ Langues disponibles: {lstjeux[idx].lstlangage}""")
 
 ################## Autres ##################
 
+    elif str_choix != "q" and len(lstjeux) == 0:
+        print("Créer un objet avant d'utiliser cette fonction!")
+        
     elif str_choix == "q":
         print("\nAu revoirs!")
     
