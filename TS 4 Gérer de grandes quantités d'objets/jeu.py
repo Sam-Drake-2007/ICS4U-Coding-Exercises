@@ -55,7 +55,7 @@ class jeu:
     def lstgenre(self):
         return self._lstgenre
         
-    @lstdeveloppeur.setter
+    @lstgenre.setter
     def lstgenre(self, strvaleur):
         self._lstgenre = strvaleur
         

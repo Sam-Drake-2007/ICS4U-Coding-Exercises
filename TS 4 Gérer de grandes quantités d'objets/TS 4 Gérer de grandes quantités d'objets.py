@@ -46,7 +46,7 @@ Choix: """).lower()
         
         strnom = input("Entrer le nom du jeux: ")
         lstjeux.append(jeu(strnom))
-        print(f"\nJeux '{lstjeux[-1].strnom}' ajoutée!")
+        print(f"\nJeux '{lstjeux[-1].strnom}' créer!")
 
 
 ################## Option 2 ##################
@@ -116,44 +116,41 @@ Choix: """)
                     print("L'année de publication doit être un nombre entier, ressayer.")
         
         elif choix_propriété == "5":
-            print(f"Voici les jeux actuels : {afficher(lstjeux)}")
-            loop = ""
-            while loop != "false":
-                try:
-                    strchoixnom = input("Quel est le nom du jeu vidéo que tu veux modifié les langues disponibles : ")
-                    position = afficher(lstjeux).index(strchoixnom)
-                    loop = "false"
-                except:
-                    print(f"Le nom {strchoixnom} n'existe pas, ressayer.")
-            loop = ""
-            while loop != "false":
-                try:
-                    print(f"Voici les languages disponibles pour le jeu vidéo {afficher(lstjeux[position])} : {lstjeux[position].lstlangage}")
+            
+            position = afficher(lstjeux).index(str_choix_modifier)
+            print(f"Voici les languages disponibles pour le jeu vidéo {afficher(lstjeux)[position]} : {lstjeux[position].lstlangage}")
+            while True:
+                strchoix = input("Voulez vous supprimer ou ajouter un des langages disponibles? (supprimer/ajouter) ").lower()
+                if strchoix == "supprimer":
+                    print(len(lstjeux[position]))
+                    x, y, z = len(lstjeux[position])
+                    if z > 0:
+                        while True:
+                            strchoixsup = input("Quel langage veut tu supprimer? : ").lower()
+                            positionsup = lstjeux[position].lstlangage.index(strchoixsup)
+                            x, langage = lstjeux[position].lstlangage[positionsup]
+                            if strchoixsup == langage:
+                                lstjeux[position].lstlangage[positionsup].sup_objet_dev(strchoixsup)
+                                break
+                            else:
+                                print(f"Le jeu vidéo {strchoixsup} n'est pas un jeu qui a été créer, ressayer.")
+                            break
+                    else:
+                        print("Il n'y a aucun langue disponible à supprimer.")
+                          
+                elif strchoix == "ajouter":
                     while True:
-                        strchoix = input("Voulez vous supprimer ou modifier un des langages disponibles? (supprimer/modifier) ").lower()
-                        if strchoix == "supprimer":
-                            while True:
-                                strchoixsup = input("Quel langage veut tu supprimer? : ").lower()
-                                positionsup = afficher(lstjeux[position]).lstlangage.index(strchoixsup)
-                                x, langage = lstlangage[positionsup]
-                                if strchoixsup == langage:
-                                    lstjeux[position].lstlangage[positionsup].sup_objet_dev(strchoixsup)
-                                    break
-                                else:
-                                    print(f"Le jeu vidéo {strchoixsup} n'est pas un jeu qui a été créer, ressayer.")
-                        elif strchoix == "modifier":
-                            while True:
-                                strchoixmod = input("Quel langage veut tu modifier? : ").lower()
-                                positionmod = afficher(lstjeux[position]).lstlangage.index(strchoixmod)
-                                x, langage = lstlangage[positionmod]
-                                if strchoixsup == langage:
-                                    lstjeux[position].lstlangage[positionmod] = strchoixmod
-                                    break
-                                else:
-                                    print(f"Le jeu vidéo {strchoixmod} n'est pas un jeu qui a été créer, ressayer.")
-                        
+                        strchoixajou = input("Quel langage veux-tu ajouter? : ").lower()
+                                
+                        if strchoixajou not in lstjeux[position].lstlangage:
+                            lstjeux[position].lstlangage.append(strchoixajou)
+                            break
                         else:
-                            print("Entrer soit supprimer ou modifier, ressayer.")
+                            print(f"La langue {strchoixajou} a déjà été créer, ressayer.")
+                    break
+                else:
+                    print("Entrer soit supprimer ou ajouter, ressayer.")
+                
         
         else:
             print("Choix invalide")
@@ -163,17 +160,12 @@ Choix: """)
 
     elif str_choix == "3" and len(lstjeux) != 0:
         
-        str_choix_afficher = input(f"\n{afficher(lstjeux)}\nEntrer le nom du jeux que vous voulez voir les propriétés: ")
+        str_choix_afficher = input(f"\nListe de jeux: {afficher(lstjeux)}\nEntrer un nom de jeu vidéo pour voir ses propriétés: ")
         while str_choix_afficher not in afficher(lstjeux):
-            str_choix_afficher = input(f"\nOption invalide; entrer le nom du jeux que vous voulez voir les propriétés: ")
+            str_choix_afficher = input(f"Option invalide. Entrer un nom de jeu vidéo pour voir ses propriétés: ")
         
         idx = afficher(lstjeux).index(str_choix_afficher)
-        print(f"""
-Nom: {lstjeux[idx].strnom}
-Developpeur(s): {lstjeux[idx].lstdeveloppeur}
-Genre: {lstjeux[idx].lstgenre}
-Année de publication: {lstjeux[idx].intannee}
-Langues disponibles: {lstjeux[idx].lstlangage}""")
+        print(f"\nNom: '{lstjeux[idx].strnom}'\nDeveloppeur(s): {lstjeux[idx].lstdeveloppeur}\nGenre: {lstjeux[idx].lstgenre}\nAnnée de publication: {lstjeux[idx].intannee}\nLangues disponibles: {lstjeux[idx].lstlangage}")
 
 
 ################## Option 4 ##################
@@ -182,13 +174,13 @@ Langues disponibles: {lstjeux[idx].lstlangage}""")
         
         loop = ""
         while loop != "false":
-            nom = input(f"\n{afficher(lstjeux)}\nEntrer le nom du jeu que tu veux supprimer : ")
+            nom = input(f"\nListe de jeux: {afficher(lstjeux)}\nEntrer le nom du jeu que tu veux supprimer : ")
             try:
                 lstjeux.pop(afficher(lstjeux).index(nom))
                 loop = "false"
-                print(f"\nLe jeu vidéo {nom} a été supprimé.")
+                print(f"\nLe jeu vidéo '{nom}' a été supprimé.")
             except:
-                print(f"\nLe jeu vidéo {nom} n'existe pas, ressayer.")
+                print(f"Le jeu vidéo '{nom}' n'existe pas, ressayer.")
 
 
 ################## Autres ##################
